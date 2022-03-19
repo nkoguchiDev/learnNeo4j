@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pydantic = "*"
+neo4j = "*"
 
 [dev-packages]
 

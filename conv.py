@@ -1,23 +1,10 @@
-from pydantic import BaseModel
+class ModelConverter:
+    def __init__(self, model):
+        self.model = model.__dict__
 
-
-class User(BaseModel):
-    name: str
-    description: str
-    price: str
-    tax: str
-
-
-user = {
-    "name": 'name0',
-    "description": 'description1',
-    "price": 'price2',
-    "tax": 'tax3'
-}
-
-if __name__ == '__main__':
-    _user = User(**user).__dict__
-
-    t = [f'{i}: "{_user.get(i)}"' for i in list(User(**user).__dict__.keys())]
-    data_str = f'{{{",".join(t)}}}'
-    print(data_str)
+    def to_cypher_object(self):
+        key_values = [
+            f'{key}: "{self.model.get(key)}"'
+            for key in list(self.model.keys())
+        ]
+        return f'{{{",".join(key_values)}}}'
