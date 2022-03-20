@@ -38,6 +38,15 @@ class TestCRUDUser:
         assert len(result) == 1
         assert result[0]['email'] == _user['email']
 
+    def test_update_by_email(self, db):
+        update_email = 'update_email'
+        result = crud.user.update_by_email(
+            db, email=_user['email'], update_email=update_email)
+
+        assert len(result) == 1
+        assert result[0]['email'] == update_email
+        assert result[0]['name'] == _user['name']
+
     def test_delete_by_email(self, db):
         crud.user.delete_by_email(db, email=_user['email'])
         result = crud.user.get_by_email(db, email=_user['email'])

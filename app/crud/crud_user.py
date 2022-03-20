@@ -51,6 +51,21 @@ class CRUDUser:
         return [record.get(settings.USER_NODE_NAME)
                 for record in result.data()]
 
+    def update_by_email(
+            self,
+            db: GraphDatabase,
+            email: str,
+            update_email: str) -> list:
+        query = f"""
+                MATCH ({settings.USER_NODE_NAME}:{settings.USER_NODE_LABEL})
+                WHERE {settings.USER_NODE_NAME}.email='{email}'
+                SET {settings.USER_NODE_NAME}.email='{update_email}'
+                RETURN {settings.USER_NODE_NAME}
+                """
+        result = db.run(query)
+        return [record.get(settings.USER_NODE_NAME)
+                for record in result.data()]
+
     def delete_by_email(self, db: GraphDatabase, email: str) -> None:
         query = f"""
                 MATCH({settings.USER_NODE_NAME}:{settings.USER_NODE_LABEL})
