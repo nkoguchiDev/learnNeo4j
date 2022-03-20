@@ -21,5 +21,5 @@ class TestModelConverter:
         }
 
         modelConverter = utils.modelConverter.to_cypher_object(User(**user))
-        assert modelConverter.to_cypher_object(
-        ) == '{name: "name0",description: "description1",price: "price2",tax: "tax3"}'
+        assert modelConverter == \
+            '{name: "name0",description: "description1",price: "price2",tax: "tax3"}'

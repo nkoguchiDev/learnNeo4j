@@ -29,7 +29,7 @@ _user = {
 class TestCRUDUser:
 
     def test_create(self, db):
-        result = crud.create(db, User(**_user))
+        result = crud.user.create(db, User(**_user))
         assert result[0]['name'] == _user['name']
 
     def test_get_by_email(self, db):

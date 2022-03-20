@@ -42,10 +42,9 @@ class CRUDUser:
                 for record in result.data()]
 
     def create(self, db: GraphDatabase, user: User) -> list:
-        modelConverter = utils.modelConverter.to_cypher_object(user)
         query = f"""
                 CREATE ({settings.USER_NODE_NAME}:{settings.USER_NODE_LABEL}
-                        {modelConverter.to_cypher_object()})
+                        {utils.modelConverter.to_cypher_object(user)})
                 RETURN {settings.USER_NODE_NAME}
                 """
         result = db.run(query)
