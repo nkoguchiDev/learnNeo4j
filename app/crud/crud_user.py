@@ -1,17 +1,10 @@
-from cgi import test
-from curses.ascii import US
 import uuid
-from config import settings
-from conv import ModelConverter
 
-from neo4j import GraphDatabase
 from pydantic import BaseModel
+from neo4j import GraphDatabase
 
-
-driver = GraphDatabase.driver(
-    f"neo4j://{settings.GRAPH_DB_HOST}:{settings.GRAPH_DB_PORT}",
-    auth=(settings.GRAPH_DB_USER,
-          settings.GRAPH_DB_PASSWORD))
+from app.core.config import settings
+from app import utils
 
 
 class User(BaseModel):
@@ -49,7 +42,7 @@ class CRUDUser:
                 for record in result.data()]
 
     def create(self, db: GraphDatabase, user: User) -> list:
-        modelConverter = ModelConverter(user)
+        modelConverter = utils.modelConverter.to_cypher_object(user)
         query = f"""
                 CREATE ({settings.USER_NODE_NAME}:{settings.USER_NODE_LABEL}
                         {modelConverter.to_cypher_object()})
@@ -68,8 +61,4 @@ class CRUDUser:
         db.run(query)
 
 
-if __name__ == '__main__':
-    cRUDUser = CRUDUser()
-    print(cRUDUser.create(driver.session(), User(**_user)))
-    print(cRUDUser.get_by_email(driver.session(), "email1"))
-    cRUDUser.delete_by_email(driver.session(), "email1")
+user = CRUDUser()

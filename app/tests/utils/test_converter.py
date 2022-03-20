@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from conv import ModelConverter
+from app import utils
 
 
 class TestModelConverter:
@@ -20,6 +20,6 @@ class TestModelConverter:
             "tax": 'tax3'
         }
 
-        modelConverter = ModelConverter(User(**user))
+        modelConverter = utils.modelConverter.to_cypher_object(User(**user))
         assert modelConverter.to_cypher_object(
         ) == '{name: "name0",description: "description1",price: "price2",tax: "tax3"}'
