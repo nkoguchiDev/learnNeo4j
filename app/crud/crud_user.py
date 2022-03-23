@@ -4,26 +4,8 @@ from pydantic import BaseModel
 from neo4j import GraphDatabase
 
 from app.core.config import settings
+from app.schemas.user import UserInDB
 from app import utils
-
-
-class User(BaseModel):
-    id: str
-    name: str
-    email: str
-    description: str
-    price: str
-    tax: str
-
-
-_user = {
-    "id": uuid.uuid4().hex,
-    "name": 'name0',
-    "email": 'email1',
-    "description": 'description1',
-    "price": 'price2',
-    "tax": 'tax3'
-}
 
 
 class CRUDUser:
@@ -41,7 +23,7 @@ class CRUDUser:
         return [record.get(settings.USER_NODE_NAME)
                 for record in result.data()]
 
-    def create(self, db: GraphDatabase, user: User) -> list:
+    def create(self, db: GraphDatabase, user: UserInDB) -> list:
         query = f"""
                 CREATE ({settings.USER_NODE_NAME}:{settings.USER_NODE_LABEL}
                         {utils.modelConverter.to_cypher_object(user)})
